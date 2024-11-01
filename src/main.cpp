@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main(char argc, char** argv) {
+int main(int argc, char** argv) {
     // check command line arguments for the address that the server will listen on
     std::string versionInfo = "Bluetooth http manager version ";
 #ifdef SW_VERSION

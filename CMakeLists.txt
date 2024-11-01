@@ -21,6 +21,8 @@ endif()
 
 if(WIN32)
     set(CMAKE_PREFIX_PATH C:/Qt6/6.8.0/mingw_64)
+else()
+    set(CMAKE_PREFIX_PATH /home/andrew/Qt/6.8.0/gcc_64)
 endif()
 find_package(Qt6 REQUIRED COMPONENTS Bluetooth Network Core)
 
@@ -75,12 +77,13 @@ set(DLL_FILES
     "Qt6Core.dll"
 )
 
-# Iterate over each DLL and add a custom command to copy it to the build directory
-foreach(DLL ${DLL_FILES})
-    add_custom_command(
-        TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${QT_BIN_DIR}/${DLL}" "${CMAKE_BINARY_DIR}/bin/Debug"
-        COMMENT "Copying ${DLL} to ${CMAKE_BINARY_DIR}/bin/Debug"
-    )
-endforeach()
+if(WIN32)
+    foreach(DLL ${DLL_FILES})
+        add_custom_command(
+            TARGET ${PROJECT_NAME} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${QT_BIN_DIR}/${DLL}" "${CMAKE_BINARY_DIR}/bin/Debug"
+            COMMENT "Copying ${DLL} to ${CMAKE_BINARY_DIR}/bin/Debug"
+        )
+    endforeach()
+endif()
