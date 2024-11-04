@@ -76,4 +76,6 @@ void BluetoothManager::devicePairingSuccess(const QBluetoothAddress& address, QB
 
 }
 
+void BluetoothManager::sendMessage(const QString& recipient, const QString& message){
 
+}
