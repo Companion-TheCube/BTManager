@@ -1,6 +1,9 @@
 #include "main.h"
 
 int main(int argc, char** argv) {
+#ifndef __linux__
+    static_assert(false, "This code is only for Linux.");
+#endif
     // check command line arguments for the address that the server will listen on
     std::string versionInfo = "Bluetooth http manager version ";
 #ifdef SW_VERSION
@@ -11,12 +14,7 @@ int main(int argc, char** argv) {
     versionInfo += "\n";
     versionInfo += "Built on: " + std::string(__DATE__) + " " + std::string(__TIME__) + "\n";
     versionInfo += "Built on: ";
-#ifdef __linux__
     versionInfo += "Linux";
-#endif
-#ifdef _WIN32
-    versionInfo += "Windows";
-#endif
     versionInfo += "\nCompiler: ";
 #ifdef __clang__
     versionInfo += "Clang";
@@ -24,27 +22,8 @@ int main(int argc, char** argv) {
 #ifdef __GNUC__
     versionInfo += "GCC";
 #endif
-#ifdef _MSC_VER
-    versionInfo += "MSVC";
-#endif
     versionInfo += "\nC++ Standard: ";
 #ifdef __cplusplus
-#ifdef _MSVC_LANG
-    if (_MSVC_LANG == 202300L)
-        versionInfo += "C++23";
-    else if (_MSVC_LANG == 202100L)
-        versionInfo += "C++21";
-    else if (_MSVC_LANG == 202002L)
-        versionInfo += "C++20";
-    else if (_MSVC_LANG == 201703L)
-        versionInfo += "C++17";
-    else if (_MSVC_LANG == 201402L)
-        versionInfo += "C++14";
-    else if (_MSVC_LANG == 201103L)
-        versionInfo += "C++11";
-    else
-        versionInfo += std::to_string(_MSVC_LANG);
-#else
     if (__cplusplus == 202300L)
         versionInfo += "C++23";
     else if (__cplusplus == 202100L)
@@ -60,14 +39,13 @@ int main(int argc, char** argv) {
     else
         versionInfo += std::to_string(__cplusplus);
 #endif
-#endif
-    versionInfo += "\nAuthor: Andrew McDaniel\nCopyright: 2024\n";
+    versionInfo += "\nAuthor: Andrew McDaniel\nCopyright: 2025\n";
     argparse::ArgumentParser argumentParser(PROJECT_NAME, versionInfo);
 
     argumentParser.add_argument("-a", "--address")
             .help("The address that the server will listen on")
 #ifdef _WIN32
-            .default_value("localhost");
+            throw std::runtime_error("Windows support is not available for this application. Please use Linux.");
 #else
             .default_value("/tmp/bt_http_manager.sock");
 #endif
