@@ -28,6 +28,7 @@ else()
     set(CMAKE_PREFIX_PATH /home/andrew/Qt/6.8.0/gcc_64)
 endif()
 find_package(Qt6 REQUIRED COMPONENTS Bluetooth Network Core)
+find_package(OpenSSL REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download/v3.11.3/json.tar.xz)
@@ -57,6 +58,8 @@ target_link_libraries(BT_Manager PRIVATE
     Qt6::Bluetooth
     Qt6::Network
     Qt6::Core
+    OpenSSL::SSL
+    OpenSSL::Crypto
 )
 target_compile_features(BT_Manager PRIVATE cxx_std_23)
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
